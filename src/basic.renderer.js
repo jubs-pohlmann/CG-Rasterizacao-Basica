@@ -9,7 +9,6 @@
     
     // https://www.algorithms-and-technologies.com/point_in_polygon/javascript     
     function inside(  x, y, primitive  ) {
-        
         let odd = false;
         for (let i = 0, j = primitive.vertices.length - 1; i < primitive.vertices.length; i++) {
             if (((primitive.vertices[i][1] > y) !== (primitive.vertices[j][1] > y)) 
@@ -24,7 +23,7 @@
     function circleTriangulation(primitive){
         primitive.vertices = [];
         let R = primitive.radius;
-        let angle = 3000/(Math.PI*R);
+        let angle = 260/(Math.PI*R);
         let quantSlices = Math.floor(360/angle); //garantindo fatias completas
         angle = 360/quantSlices;
         for(let i=0; i < quantSlices; i++){
@@ -32,6 +31,7 @@
                 [Math.cos(angle*i)*R + primitive.center[0], Math.sin(angle*i)*R + primitive.center[1]]
             );
         }
+        console.log(primitive);
         return primitive;
     }
 
@@ -52,6 +52,8 @@
                     y_min: boxMatrix[2][1],
                     y_max: boxMatrix[3][1]
                 }
+                // primitive.center = multiplyMatrices([primitive.center], primitive.xform)[0];
+                
             } else {
                 box = {
                     x_min: primitive.center[0] - primitive.radius,
@@ -80,15 +82,16 @@
 
     function multiplyMatrices(matrix_1, matrix_2){
         let resulting_matrix = [];
+        let newValue = 0;
         for (let i = 0; i < matrix_1.length; i++) {
             matrix_1[i].push(1); //coordenadas homogeneas 2d->3d
             resulting_matrix.push([]);
             for (let j = 0; j < matrix_2.length; j++) {
-                var newValue = 0;
                 for (let k = 0; k < matrix_1[0].length; k++) {
                     newValue += matrix_1[i][k]*matrix_2[k][j];
                 }
                 resulting_matrix[i][j] = newValue;
+                newValue = 0;
             }
         }
         return resulting_matrix;
@@ -96,6 +99,7 @@
 
     function transform(primitive){
         primitive.vertices = multiplyMatrices(primitive.vertices, primitive.xform);
+        console.log(primitive);
         return primitive;  
     }
     
