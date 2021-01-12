@@ -23,12 +23,24 @@
     function circleTriangulation(primitive){
         primitive.vertices = [];
         let R = primitive.radius;
-        let angle = 260/(Math.PI*R);
+        // let angle = 260/(Math.PI*R);
+        // let quantSlices = Math.floor(360/angle); //garantindo fatias completas
+        // angle = 360/quantSlices;
+        // for(let i=0; i < quantSlices; i++){
+        //     primitive.vertices.push(
+        //         [Math.cos(angle*i)*R + primitive.center[0], Math.sin(angle*i)*R + primitive.center[1]]
+        //     );
+        // }
+        // console.log(primitive);
+        // return primitive;
+        let triangleBase = 10;
+        let angle = Math.acos(1 - triangleBase/(2*R^2));
+        console.log(angle);
         let quantSlices = Math.floor(360/angle); //garantindo fatias completas
         angle = 360/quantSlices;
         for(let i=0; i < quantSlices; i++){
             primitive.vertices.push(
-                [Math.cos(angle*i)*R + primitive.center[0], Math.sin(angle*i)*R + primitive.center[1]]
+                [Math.cos((angle)*i)*R + primitive.center[0], Math.sin((angle)*i)*R + primitive.center[1]]
             );
         }
         console.log(primitive);
